@@ -47,4 +47,7 @@ try {
   writeFileSync(join(output, 'dossier.json'), buildDossier(output, { text_max_bytes: 65536, screenshots: { max: 4, max_bytes: 524288 }, dashboard: { max_files: 400, max_bytes: 4194304 } }));
   console.log(`${snapshot.protocols.length} protocols scanned; ${radar.watchlist_size} watchlist rows; ${board.length} board rows.`);
   console.log(`Wrote board.json, data.js, dashboard/, screenshots/ and dossier.json to ${output}.`);
+  const p = radar.model;
+  console.log(`Coefficients (fitted): growth+ ${p.growth_positive_weight}, growth- ${p.growth_negative_weight}, age base ${p.age_base}, age weight ${p.age_weight}, breadth ${p.breadth_per_extra_chain}.`);
+  console.log(`Holdout median |log10 error|: ${radar.validation.holdout.map(h => `fit ${h.fit_half} -> test ${h.test_half}: fitted ${h.fitted} vs unadjusted ${h.neutral}`).join('; ')}.`);
 } catch (error) { console.error(error instanceof Error ? error.message : String(error)); process.exit(1); }
